@@ -40,8 +40,9 @@ return compose('Example Laravel application')
     )
     ->step(
         name: 'Configure Laravel Fortify',
-        operations: function (Step $step, Laravel $laravel): void {
-            //https://laravel.com/docs/13.x/fortify#main-content
-            $laravel->artisan()->migrate();
+        operations: function (Step $step): void {
+            $step->instruct(
+                task: 'Configure Laravel Fortify using the latest documentation, available at https://laravel.com/docs/fortify',
+            );
         },
     );
