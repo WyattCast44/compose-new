@@ -34,7 +34,7 @@ return compose('Example Laravel application')
         operations: function (Step $step, Laravel $laravel): void {
             $step->composer()->require('laravel/fortify');
             $step->process()->run(['php', 'artisan', 'fortify:install']);
-            $laravel->artisan()->migrate();
+            $laravel->artisan()->migrate(seed: true);
             $step->git()->commit('Install Laravel Fortify');
         },
     )
