@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Compose\Laravel\LaravelStep as Artisan;
+use Compose\Laravel\LaravelStep as Laravel;
 use Compose\Step;
 use Compose\StepConfig;
 
@@ -20,12 +20,28 @@ return compose('Example Laravel application')
             $step->git()->commit('Install dependencies');
         },
     )
-    ->step('Configure', operations: function (Step $step, Artisan $artisan): void {
+    ->step('Configure Application', operations: function (Step $step, Laravel $laravel): void {
         $step->files()->copy('.env.example', '.env');
-        $artisan->env()->set('APP_NAME', 'Compose Example');
-        $artisan->env()->set('APP_URL', 'http://compose-example.test');
-        $artisan->config('app')->configSet('timezone', 'UTC');
-        $artisan->artisan()->keyGenerate();
+        $laravel->env()->set('APP_NAME', 'Compose Example');
+        $laravel->env()->set('APP_URL', 'http://compose-example.test');
+        $laravel->config('app')->configSet('timezone', 'UTC');
+        $laravel->artisan()->keyGenerate();
         $step->git()->commit('Configure application');
-        $artisan->env()->has('APP_KEY');
-    });
+        $laravel->env()->has('APP_KEY');
+    })
+    ->step(
+        name: 'Install Laravel Fortify',
+        operations: function (Step $step, Laravel $laravel): void {
+            $step->composer()->require('laravel/fortify');
+            $step->process()->run(['php', 'artisan', 'fortify:install']);
+            $laravel->artisan()->migrate();
+            $step->git()->commit('Install Laravel Fortify');
+        },
+    )
+    ->step(
+        name: 'Configure Laravel Fortify',
+        operations: function (Step $step, Laravel $laravel): void {
+            //https://laravel.com/docs/13.x/fortify#main-content
+            $laravel->artisan()->migrate();
+        },
+    );
