@@ -35,7 +35,6 @@ final class RunCommand extends Command
         $this->addOption('json', null, InputOption::VALUE_NONE, 'Print machine-readable results');
         $this->addOption('agent', null, InputOption::VALUE_REQUIRED, 'Default AI agent (codex or claude)');
         $this->addOption('model', null, InputOption::VALUE_REQUIRED, 'Default AI model');
-        $this->addOption('rebake', null, InputOption::VALUE_NONE, 'Ignore cached AI patches');
         $this->addOption('accept-ai', null, InputOption::VALUE_NONE, 'Accept review-gated AI changes non-interactively');
     }
 
@@ -73,13 +72,12 @@ final class RunCommand extends Command
             }
         };
         $result = $this->runner->run($composition, new RunOptions(
-            $root,
-            $configuration->agent,
-            $configuration->model,
-            (bool) $input->getOption('rebake'),
-            (bool) $input->getOption('accept-ai'),
-            $reviewer,
-            $onAgentOutput,
+            root: $root,
+            agent: $configuration->agent,
+            model: $configuration->model,
+            acceptAi: (bool) $input->getOption('accept-ai'),
+            reviewer: $reviewer,
+            onAgentOutput: $onAgentOutput,
         ));
 
         if ($input->getOption('json')) {

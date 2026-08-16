@@ -105,8 +105,7 @@ final class LivewireStarterKit extends Recipe
                                 'Meet WCAG AA expectations for semantics, focus states, contrast, and validation errors.',
                                 'Add focused feature tests for guest access, authentication views, and dashboard authorization.',
                             )
-                            ->review()
-                            ->bake();
+                            ->review();
                     },
                 );
             })
@@ -176,7 +175,6 @@ return compose('Create a customized Laravel starter application')
 |     ->lock('.compose/compose.lock');
 |
 | The lockfile should record resolved recipe versions, the Laravel revision,
-| package locks, normalized answers, tool versions, and approved AI patch hashes
-| so the same starter can be reproduced without calling an agent again.
+| package locks, normalized answers, tool versions, and AI execution metadata.
 |
 */

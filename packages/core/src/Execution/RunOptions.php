@@ -14,7 +14,6 @@ final readonly class RunOptions
         public string $root,
         public string $agent = 'codex',
         public ?string $model = null,
-        public bool $rebake = false,
         public bool $acceptAi = false,
         public ?AgentReviewer $reviewer = null,
         public ?Closure $onAgentOutput = null,

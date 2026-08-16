@@ -76,12 +76,6 @@ final readonly class GitRepository
         $this->must(['git', 'read-tree', $checkpoint->index], $checkpoint->root);
     }
 
-    public function applyPatch(string $root, string $patch): void
-    {
-        $this->must(['git', 'apply', '--check', '--binary', '-'], $root, $patch);
-        $this->must(['git', 'apply', '--binary', '--whitespace=nowarn', '-'], $root, $patch);
-    }
-
     private function captureWorktree(string $root, string $head): string
     {
         $index = tempnam(sys_get_temp_dir(), 'compose-index-');

@@ -46,8 +46,7 @@ return compose('My application')
                 ->allowChanges('README.md')
                 ->rules('Keep existing installation instructions')
                 ->agent(Agent::Codex)
-                ->review()
-                ->bake();
+                ->review();
         });
     });
 ```
@@ -65,7 +64,7 @@ vendor/bin/compose run compose.php --yes --json
 
 Interactive and ordinary terminal runs report each step and action as it starts, followed by completion, retry, warning, rollback, or failure status and elapsed time. AI instructions also stream readable agent messages, tool calls, and command output as the agent works. Add `-v` to include captured output from other commands. `--json` suppresses all progress rendering so stdout remains valid JSON.
 
-AI defaults can be selected with `--agent=codex|claude` and `--model=...`. Project defaults live in `.compose/config.json`; user defaults live in `~/.config/compose/config.json`. CLI options take precedence. `--rebake` bypasses an existing baked AI patch, while `--accept-ai` accepts review-gated AI work in non-interactive runs.
+AI defaults can be selected with `--agent=codex|claude` and `--model=...`. Project defaults live in `.compose/config.json`; user defaults live in `~/.config/compose/config.json`. CLI options take precedence. `--accept-ai` accepts review-gated AI work in non-interactive runs.
 
 ## Core API
 
@@ -100,7 +99,7 @@ Reusable workflows extend `Compose\Recipe`. Recipes are configured as objects, c
 - Git reference mutations are reported as non-reversible. Compose will not pretend it can roll back a changed `HEAD`.
 - Plans and results are JSON serializable. Lifecycle events are exposed for custom output and telemetry.
 
-AI instructions require a Git repository with a commit. Compose validates that the agent did not change `HEAD`, restricts changed paths to `allowChanges()` globs, supports review/rollback/steering, and can store content-addressed patches in `.compose/bakes`. Codex and Claude Code are built-in drivers; the driver contract and fakes are public for testing and additional integrations.
+AI instructions require a Git repository with a commit. Compose validates that the agent did not change `HEAD`, restricts changed paths to `allowChanges()` globs, and supports review, rollback, and steering. Codex and Claude Code are built-in drivers; the driver contract and fakes are public for testing and additional integrations.
 
 ## Development
 

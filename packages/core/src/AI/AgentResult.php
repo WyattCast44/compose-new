@@ -15,7 +15,6 @@ final readonly class AgentResult implements JsonSerializable
         public ?int $inputTokens = null,
         public ?int $outputTokens = null,
         public ?float $cost = null,
-        public bool $baked = false,
     ) {}
 
     /** @return array<string, mixed> */

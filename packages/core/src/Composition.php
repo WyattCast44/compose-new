@@ -79,6 +79,7 @@ final class Composition
         }
 
         $operations(...$arguments);
+        
         $this->steps[] = $draft->freeze();
 
         return $this;

@@ -17,8 +17,6 @@ final class Instruction
 
     private bool $review = false;
 
-    private bool $bake = false;
-
     private ?Agent $agent = null;
 
     private ?string $model = null;
@@ -53,13 +51,6 @@ final class Instruction
         return $this;
     }
 
-    public function bake(bool $bake = true): self
-    {
-        $this->bake = $bake;
-
-        return $this;
-    }
-
     public function agent(Agent $agent, ?string $model = null): self
     {
         $this->agent = $agent;
@@ -77,7 +68,6 @@ final class Instruction
             'allowed_changes' => array_values(array_unique($this->allowedChanges)),
             'rules' => $this->rules,
             'review' => $this->review,
-            'bake' => $this->bake,
             'agent' => $this->agent?->value,
             'model' => $this->model,
         ];

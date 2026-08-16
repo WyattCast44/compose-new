@@ -17,7 +17,6 @@ final readonly class AiExecutor
     public function __construct(
         private AgentRegistry $agents = new AgentRegistry,
         private GitRepository $git = new GitRepository,
-        private BakeStore $bakes = new BakeStore,
     ) {}
 
     public function execute(ActionDefinition $action, string $cwd, GitCheckpoint $checkpoint, RunOptions $options): ActionResult
@@ -26,13 +25,6 @@ final readonly class AiExecutor
         $payload = $action->payload;
 
         try {
-            $key = $this->bakes->key($cwd, $payload);
-            if (($payload['bake'] ?? false) && ! $options->rebake && ($patch = $this->bakes->get($checkpoint->root, $key)) !== null) {
-                $this->git->applyPatch($checkpoint->root, $patch);
-
-                return new ActionResult($action, true, 'Applied baked AI patch.', duration: microtime(true) - $started, agent: new AgentResult('bake', baked: true));
-            }
-
             $driverId = (string) ($payload['agent'] ?? $options->agent);
             $model = $payload['model'] ?? $options->model;
             $driver = $this->agents->get($driverId);
@@ -54,7 +46,6 @@ final readonly class AiExecutor
 
                 $changed = $this->git->changedPaths($checkpoint);
                 $this->assertAllowed($changed, $payload['allowed_changes'] ?? []);
-                $patch = $this->git->patch($checkpoint);
 
                 if (! ($payload['review'] ?? false) || $options->acceptAi) {
                     break;
@@ -63,6 +54,7 @@ final readonly class AiExecutor
                     throw new ComposeException('AI review is required; use an interactive reviewer or --accept-ai.');
                 }
 
+                $patch = $this->git->patch($checkpoint);
                 $review = $options->reviewer->review(new AgentReview((string) $payload['task'], $run->output, $patch, $changed));
                 if ($review->decision === ReviewDecision::Continue) {
                     break;
@@ -80,15 +72,6 @@ final readonly class AiExecutor
                     $model,
                     $options->onAgentOutput,
                 ));
-            }
-
-            if ($payload['bake'] ?? false) {
-                $this->bakes->put($checkpoint->root, $key, $patch, [
-                    'task' => $payload['task'],
-                    'driver' => $driverId,
-                    'model' => $model,
-                    'created_at' => date(DATE_ATOM),
-                ]);
             }
 
             return new ActionResult(
