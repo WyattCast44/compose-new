@@ -1,0 +1,56 @@
+{
+    "name": "compose/monorepo",
+    "description": "Development monorepo for Compose.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "compose/compose": "@dev",
+        "compose/laravel": "@dev"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "pestphp/pest": "^5.0",
+        "phpstan/phpstan": "^2.0"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/core",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/laravel",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "autoload-dev": {
+        "psr-4": {
+            "Compose\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "analyse": "phpstan analyse --memory-limit=1G --no-progress --debug",
+        "format": "pint",
+        "format:check": "pint --test",
+        "check": [
+            "@format:check",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

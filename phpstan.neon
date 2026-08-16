@@ -1,0 +1,9 @@
+parameters:
+    level: 8
+    paths:
+        - packages/core/src
+        - packages/laravel/src
+        - tests
+    tmpDir: .build/phpstan
+    parallel:
+        maximumNumberOfProcesses: 1
