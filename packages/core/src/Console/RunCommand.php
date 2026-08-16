@@ -65,6 +65,13 @@ final class RunCommand extends Command
         if (! $input->getOption('json')) {
             (new ConsoleRunReporter($output, $plan))->attach($this->runner->events());
         }
+        $onAgentOutput = $input->getOption('json') ? null : static function (string $message) use ($output): void {
+            foreach (preg_split('/\R/', trim($message)) ?: [] as $line) {
+                if ($line !== '') {
+                    $output->writeln('      '.$line, OutputInterface::OUTPUT_RAW);
+                }
+            }
+        };
         $result = $this->runner->run($composition, new RunOptions(
             $root,
             $configuration->agent,
@@ -72,6 +79,7 @@ final class RunCommand extends Command
             (bool) $input->getOption('rebake'),
             (bool) $input->getOption('accept-ai'),
             $reviewer,
+            $onAgentOutput,
         ));
 
         if ($input->getOption('json')) {

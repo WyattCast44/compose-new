@@ -40,7 +40,7 @@ final readonly class AiExecutor
                 throw new ComposeException("AI agent is not available: {$driverId}");
             }
 
-            $request = new AgentRequest((string) $payload['task'], $this->prompt($payload), $cwd, $model);
+            $request = new AgentRequest((string) $payload['task'], $this->prompt($payload), $cwd, $model, $options->onAgentOutput);
             $run = $driver->start($request);
             $steers = 0;
 
@@ -78,6 +78,7 @@ final readonly class AiExecutor
                     $review->message ?: 'Revise your changes based on the review.',
                     $cwd,
                     $model,
+                    $options->onAgentOutput,
                 ));
             }
 

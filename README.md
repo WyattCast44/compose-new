@@ -63,7 +63,7 @@ vendor/bin/compose run compose.php --yes
 vendor/bin/compose run compose.php --yes --json
 ```
 
-Interactive and ordinary terminal runs report each step and action as it starts, followed by completion, retry, warning, rollback, or failure status and elapsed time. Add `-v` to include captured command output. `--json` suppresses all progress rendering so stdout remains valid JSON.
+Interactive and ordinary terminal runs report each step and action as it starts, followed by completion, retry, warning, rollback, or failure status and elapsed time. AI instructions also stream readable agent messages, tool calls, and command output as the agent works. Add `-v` to include captured output from other commands. `--json` suppresses all progress rendering so stdout remains valid JSON.
 
 AI defaults can be selected with `--agent=codex|claude` and `--model=...`. Project defaults live in `.compose/config.json`; user defaults live in `~/.config/compose/config.json`. CLI options take precedence. `--rebake` bypasses an existing baked AI patch, while `--accept-ai` accepts review-gated AI work in non-interactive runs.
 

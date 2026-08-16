@@ -6,20 +6,15 @@ use Compose\Laravel\LaravelStep as Laravel;
 use Compose\Step;
 use Compose\StepConfig;
 
-return compose('Setup Livewire in the Laravel application')
+return compose('Work on the Laravel application')
     ->cwd('./.build/laravel')
     ->step(
-        name: 'Install Livewire',
-        operations: function (Step $step): void {
-            $step->composer()->require('livewire/livewire');
-            $step->git()->commit('Install Livewire');
-        },
-    )
-    ->step(
-        name: 'Configure Livewire',
+        name: 'Create a login, register, and dashboard page',
         operations: function (Step $step): void {
             $step->instruct(
-                task: 'Configure Livewire using the latest documentation, available at https://livewire.laravel.com/docs/4.x/quickstart',
+                task: '
+                Use livewire to create a login, register, and dashboard page. Use tailwindcss for the styling. And make sure it looks nice.
+                '
             );
         },
     );
