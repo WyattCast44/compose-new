@@ -19,7 +19,7 @@ return compose('Setup Livewire in the Laravel application')
         name: 'Configure Livewire',
         operations: function (Step $step): void {
             $step->instruct(
-                task: 'Configure Livewire using the latest documentation, available at https://laravel.com/docs/livewire',
+                task: 'Configure Livewire using the latest documentation, available at https://livewire.laravel.com/docs/4.x/quickstart',
             );
         },
     );
