@@ -6,6 +6,24 @@ use Compose\Laravel\LaravelStep as Laravel;
 use Compose\Step;
 use Compose\StepConfig;
 
+return compose('Setup Livewire in the Laravel application')
+    ->cwd('./.build/laravel')
+    ->step(
+        name: 'Install Livewire',
+        operations: function (Step $step): void {
+            $step->composer()->require('livewire/livewire');
+            $step->git()->commit('Install Livewire');
+        },
+    )
+    ->step(
+        name: 'Configure Livewire',
+        operations: function (Step $step): void {
+            $step->instruct(
+                task: 'Configure Livewire using the latest documentation, available at https://laravel.com/docs/livewire',
+            );
+        },
+    );
+
 return compose('Example Laravel application')
     ->step('Clone Laravel', operations: function (Step $step): void {
         $step->git()->clone('https://github.com/laravel/laravel.git')->into('./.build/laravel');
